@@ -6,14 +6,14 @@
 #    By: umosse <umosse@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/18 13:53:27 by umosse            #+#    #+#              #
-#    Updated: 2024/04/22 14:06:55 by umosse           ###   ########.fr        #
+#    Updated: 2024/04/23 16:57:21 by umosse           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 NAME = so_long
 NAME_BONUS = 
-SRCS = so_long.c
+SRCS = so_long.c movement.c map.c draw.c
 SRCS_BONUS = 
 OBJS = $(SRCS:.c=.o)
 OBJS_BONUS = $(SRCS_BONUS:.c=.o)
