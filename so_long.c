@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:52:09 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/29 17:17:13 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/29 23:38:12 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,6 @@ void	ft_end(t_game *game)
 	int	i;
 
 	i = 0;
-	mlx_destroy_image(game->mlx, game->character);
-	mlx_destroy_image(game->mlx, game->character2);
-	mlx_destroy_image(game->mlx, game->wall);
-	mlx_destroy_image(game->mlx, game->floor);
-	mlx_destroy_image(game->mlx, game->opened);
-	mlx_destroy_image(game->mlx, game->closed);
-	mlx_destroy_image(game->mlx, game->collectible);
-	mlx_destroy_image(game->mlx, game->enemy);
-	mlx_destroy_image(game->mlx, game->enemy2);
-	mlx_destroy_image(game->mlx, game->screen);
-	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_display(game->mlx);
 	while (i < game->maxmapy)
 		free(game->maptest[i++]);
 	i = 0;
@@ -56,9 +44,9 @@ int	ft_update(t_game *game)
 	clear_screen(game, 0);
 	ft_mapgen(game);
 	if (game->framecount < 31)
-		draw_sprite(game, game->character, game->x, game->y, game->flipped);
+		draw_spritec(game, game->character, game->flipped);
 	else
-		draw_sprite(game, game->character2, game->x, game->y, game->flipped);
+		draw_spritec(game, game->character2, game->flipped);
 	mlx_put_image_to_window(game->mlx, game->win, game->screen, 0, 0);
 	charsteps = ft_itoa(game->steps);
 	mlx_string_put(game->mlx, game->win, 32, 32, 0xFFFFFFFF, charsteps);
@@ -107,12 +95,7 @@ int	main(int argc, char **argv)
 		game.win = mlx_new_window(game.mlx, 1536, 768, "so_long");
 		ft_xpm_to_image(&game);
 		game.screen = mlx_new_image(game.mlx, 1536, 768);
-		mlx_hook(game.win, KeyPress, KeyPressMask, &ft_key_pressed, &game);
-		mlx_hook(game.win, DestroyNotify, StructureNotifyMask, &ft_destroy, &game);
-		mlx_loop_hook(game.mlx, ft_update, &game);
-		mlx_hook(game.win, KeyRelease, KeyReleaseMask, &ft_key_released, &game);
-		mlx_loop(game.mlx);
-		ft_end(&game);
+		ft_hooks(&game);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:23:56 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/29 17:19:06 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/29 23:39:24 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,68 @@ char	**ft_mapread(char *file, t_game *game)
 	return (map);
 }
 
+void	ft_isc(t_game *game, int x, int y)
+{
+	if (game->map[y][x] == 'C')
+	{
+		draw_sprite(game, game->floor, x * 64, y * 64);
+		if (game->x == (x * 64) && game->y == (y * 64))
+		{
+			game->map[y][x] = '0';
+			game->ccount -= 1;
+		}
+		else
+			draw_sprite(game, game->collectible, x * 64, y * 64);
+	}
+}
+
+void	ft_is1(t_game *game, int x, int y)
+{
+	if (game->map[y][x] == '1')
+	{
+		draw_sprite(game, game->wall, x * 64, y * 64);
+		if (game->x == (x * 64) && game->y == (y * 64))
+		{
+			if (game->w == 1 || game->s == 1 || game->a == 1 || game->d == 1)
+				game->steps--;
+			if (game->w == 1)
+				game->y += 64;
+			else if (game->s == 1)
+				game->y -= 64;
+			else if (game->a == 1)
+				game->x += 64;
+			else if (game->d == 1)
+				game->x -= 64;
+		}
+	}
+}
+
+void	ft_iseb(t_game *game, int x, int y)
+{
+	if (game->map[y][x] == 'E')
+	{
+		draw_sprite(game, game->floor, x * 64, y * 64);
+		if (game->ccount >= 1)
+			draw_sprite(game, game->closed, x * 64, y * 64);
+		else
+		{
+			draw_sprite(game, game->opened, x * 64, y * 64);
+			if (game->x == (x * 64) && game->y == (y * 64))
+				ft_destroy(game);
+		}
+	}
+	if (game->map[y][x] == 'B')
+	{
+		draw_sprite(game, game->floor, x * 64, y * 64);
+		if (game->framecount < 31)
+			draw_sprite(game, game->enemy, x * 64, y * 64);
+		else
+			draw_sprite(game, game->enemy2, x * 64, y * 64);
+		if (game->x == (x * 64) && game->y == (y * 64))
+			ft_destroy(game);
+	}
+}
+
 void	ft_mapgen(t_game *game)
 {
 	int	x;
@@ -60,74 +122,17 @@ void	ft_mapgen(t_game *game)
 		x = 0;
 		while (x < game->maxmapx)
 		{
-			if (game->map[y][x] == '1')
-			{
-				draw_sprite(game, game->wall, x * 64, y * 64, 0);
-				if (game->x == (x * 64) && game->y == (y * 64))
-				{
-					if (game->w == 1)
-					{
-						game->y += 64;
-						game->steps--;
-					}
-					else if (game->s == 1)
-					{
-						game->y -= 64;
-						game->steps--;
-					}
-					else if (game->a == 1)
-					{
-						game->x += 64;
-						game->steps--;
-					}
-					else if (game->d == 1)
-					{
-						game->x -= 64;
-						game->steps--;
-					}
-				}
-			}
+			ft_is1(game, x, y);
 			if (game->map[y][x] == '0')
-				draw_sprite(game, game->floor, x * 64, y * 64, 0);
+				draw_sprite(game, game->floor, x * 64, y * 64);
 			if (game->map[y][x] == 'P')
 			{
 				game->x = x * 64;
 				game->y = y * 64;
 				game->map[y][x] = '0';
 			}
-			if (game->map[y][x] == 'C')
-			{
-				draw_sprite(game, game->floor, x * 64, y * 64, 0);
-				if (game->x == (x * 64) && game->y == (y * 64))
-				{
-					game->map[y][x] = '0';
-					game->ccount -= 1;
-				}
-				else
-					draw_sprite(game, game->collectible, x * 64, y * 64, 0);
-			}
-			if (game->map[y][x] == 'E')
-			{
-				draw_sprite(game, game->floor, x * 64, y * 64, 0);
-				if (game->ccount >= 1)
-					draw_sprite(game, game->closed, x * 64, y * 64, 0);
-				else
-				{
-					draw_sprite(game, game->opened, x * 64, y * 64, 0);
-					if (game->x == (x * 64) && game->y == (y * 64))
-						ft_destroy(game);
-				}
-			}
-			if (game->map[y][x] == 'B')
-			{
-				draw_sprite(game, game->floor, x * 64, y * 64, 0);
-				if (game->framecount < 31)
-					draw_sprite(game, game->enemy, x * 64, y * 64, 0);
-				else
-					draw_sprite(game, game->enemy2, x * 64, y * 64, 0);
-				if (game->x == (x * 64) && game->y == (y * 64))
-					ft_destroy(game);
-			}
+			ft_isc(game, x, y);
+			ft_iseb(game, x, y);
 			x++;
 		}
 		y++;

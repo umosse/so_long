@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:51:40 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/25 10:25:35 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/29 23:36:18 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static inline void	_set_color(t_game *game, int x, int y,
 	((unsigned int *) game->screen->data)[x + y * game->screen->width] = color;
 }
 
-void	draw_sprite(t_game *game, t_img *sp, int x, int y, int flipped)
+void	draw_sprite(t_game *game, t_img *sp, int x, int y)
 {
 	int				xx;
 	int				yy;
@@ -43,9 +43,33 @@ void	draw_sprite(t_game *game, t_img *sp, int x, int y, int flipped)
 			if (x + xx < 0 || x + xx >= game->screen->width
 				|| y + yy < 0 || y + yy >= game->screen->height)
 				continue ;
-			color = _get_pixel(sp, xx, yy, flipped);
+			color = _get_pixel(sp, xx, yy, 0);
 			if (color != 0xff000000)
 				_set_color(game, xx + x, yy + y, color);
+		}
+	}
+}
+
+void	draw_spritec(t_game *game, t_img *sp, int flipped)
+{
+	int				xx;
+	int				yy;
+	unsigned int	color;
+
+	if (!sp)
+		return ;
+	yy = -1;
+	while (++yy < sp->height)
+	{
+		xx = -1;
+		while (++xx < sp->width)
+		{
+			if (game->x + xx < 0 || game->x + xx >= game->screen->width
+				|| game->y + yy < 0 || game->y + yy >= game->screen->height)
+				continue ;
+			color = _get_pixel(sp, xx, yy, flipped);
+			if (color != 0xff000000)
+				_set_color(game, xx + game->x, yy + game->y, color);
 		}
 	}
 }

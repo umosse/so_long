@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:40:52 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/29 17:16:05 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/29 23:38:50 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,12 @@ char	**ft_mapread(char *file, t_game *game);
 void	ft_mapgen(t_game *game);
 int		ft_flood(t_game *game, int posx, int posy);
 int		ft_flood_map(t_game *game);
-void	draw_sprite(t_game *game, t_img *sp, int x, int y, int flipped);
+void	draw_sprite(t_game *game, t_img *sp, int x, int y);
+void	draw_spritec(t_game *game, t_img *sp, int flipped);
 void	clear_screen(t_game *game, unsigned int color);
+void	ft_destroyall(t_game *game);
+int		ft_update(t_game *game);
+void	ft_hooks(t_game *game);
+void	ft_end(t_game *game);
 
 #endif
