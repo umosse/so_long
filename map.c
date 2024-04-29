@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:23:56 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/24 15:20:55 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/29 17:19:06 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ char	**ft_mapread(char *file, t_game *game)
 	line = get_next_line(fd);
 	while (line)
 	{
-		game->mapy++;
+		game->maxmapy++;
 		free (line);
 		line = get_next_line(fd);
 	}
-	map = ft_calloc(game->mapy, sizeof(char *));
+	free (line);
+	map = ft_calloc(game->maxmapy, sizeof(char *));
+	game->maptest = ft_calloc(game->maxmapy, sizeof(char *));
 	i = 0;
 	close(fd);
 	fd = open(file, O_RDONLY);
@@ -35,11 +37,15 @@ char	**ft_mapread(char *file, t_game *game)
 	while (line)
 	{
 		map[i] = line;
-		if (ft_strlen(map[i]) != ft_strlen(map[0]))
+		game->maptest[i] = ft_strdup(line);
+		game->maxmapx = ft_strlen(map[0]);
+		if ((int)ft_strlen(map[i]) != game->maxmapx || game->maxmapx > 25)
 			return (NULL);
 		i++;
 		line = get_next_line(fd);
 	}
+	if (i > 12)
+		return (NULL);
 	return (map);
 }
 
@@ -49,14 +55,37 @@ void	ft_mapgen(t_game *game)
 	int	y;
 
 	y = 0;
-	while (y < game->mapy)
+	while (y < game->maxmapy)
 	{
 		x = 0;
-		while (x < (int)ft_strlen(game->map[0]))
+		while (x < game->maxmapx)
 		{
 			if (game->map[y][x] == '1')
 			{
 				draw_sprite(game, game->wall, x * 64, y * 64, 0);
+				if (game->x == (x * 64) && game->y == (y * 64))
+				{
+					if (game->w == 1)
+					{
+						game->y += 64;
+						game->steps--;
+					}
+					else if (game->s == 1)
+					{
+						game->y -= 64;
+						game->steps--;
+					}
+					else if (game->a == 1)
+					{
+						game->x += 64;
+						game->steps--;
+					}
+					else if (game->d == 1)
+					{
+						game->x -= 64;
+						game->steps--;
+					}
+				}
 			}
 			if (game->map[y][x] == '0')
 				draw_sprite(game, game->floor, x * 64, y * 64, 0);
@@ -88,6 +117,16 @@ void	ft_mapgen(t_game *game)
 					if (game->x == (x * 64) && game->y == (y * 64))
 						ft_destroy(game);
 				}
+			}
+			if (game->map[y][x] == 'B')
+			{
+				draw_sprite(game, game->floor, x * 64, y * 64, 0);
+				if (game->framecount < 31)
+					draw_sprite(game, game->enemy, x * 64, y * 64, 0);
+				else
+					draw_sprite(game, game->enemy2, x * 64, y * 64, 0);
+				if (game->x == (x * 64) && game->y == (y * 64))
+					ft_destroy(game);
 			}
 			x++;
 		}
