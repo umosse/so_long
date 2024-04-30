@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:23:56 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/29 23:39:24 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/30 18:15:45 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,9 @@ char	**ft_mapread(char *file, t_game *game)
 	char	**map;
 	int		i;
 
-	fd = open(file, O_RDONLY);
-	line = get_next_line(fd);
-	while (line)
-	{
-		game->maxmapy++;
-		free (line);
-		line = get_next_line(fd);
-	}
-	free (line);
-	map = ft_calloc(game->maxmapy, sizeof(char *));
-	game->maptest = ft_calloc(game->maxmapy, sizeof(char *));
+	map = ft_mapalloc(file, game);
+	game->map = map;
 	i = 0;
-	close(fd);
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
@@ -40,10 +30,19 @@ char	**ft_mapread(char *file, t_game *game)
 		game->maptest[i] = ft_strdup(line);
 		game->maxmapx = ft_strlen(map[0]);
 		if ((int)ft_strlen(map[i]) != game->maxmapx || game->maxmapx > 25)
+		{
+			while (line)
+			{
+				line = get_next_line(fd);
+				free(line);
+				close(fd);
+			}
 			return (NULL);
+		}
 		i++;
 		line = get_next_line(fd);
 	}
+	close(fd);
 	if (i > 12)
 		return (NULL);
 	return (map);
@@ -107,7 +106,7 @@ void	ft_iseb(t_game *game, int x, int y)
 		else
 			draw_sprite(game, game->enemy2, x * 64, y * 64);
 		if (game->x == (x * 64) && game->y == (y * 64))
-			ft_destroy(game);
+			game->dead = 1;
 	}
 }
 

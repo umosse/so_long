@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 16:51:40 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/29 23:36:18 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:19:30 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static inline unsigned int	_get_pixel(t_img *sp, int x, int y, int flipped)
 	if (!flipped)
 		return (((unsigned int *) sp->data)[x + y * sp->width]);
 	else
-		return (((unsigned int *) sp->data)[(sp->width - x - 1) + y * sp->height]);
+		return (((unsigned int *) sp->data)
+			[(sp->width - x - 1) + y * sp->height]);
 }
 
 static inline void	_set_color(t_game *game, int x, int y,

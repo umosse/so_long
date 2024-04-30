@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:40:52 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/29 23:38:50 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/30 18:16:28 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ typedef struct s_game
 	t_img			*collectible;
 	t_img			*enemy;
 	t_img			*enemy2;
+	t_img			*death1;
+	t_img			*death2;
+	t_img			*death3;
+	t_img			*death4;
+	int				dead;
+	int				deathcount;
 	int				w;
 	int				a;
 	int				s;
@@ -57,19 +63,25 @@ typedef struct s_game
 	int				maxmapy;
 	int				flipped;
 	int				ccount;
+	int				pcount;
+	int				ecount;
 	unsigned long	framecount;
 }	t_game;
 
 # define TILE_SIZE 64
-# define CHARACTER "textures/AnimationSheet_Character.xpm"
-# define CHARACTER2 "textures/AnimationSheet_Character2.xpm"
+# define CHAR "textures/AnimationSheet_Character.xpm"
+# define CHAR2 "textures/AnimationSheet_Character2.xpm"
 # define WALL "textures/tiles1.xpm"
 # define FLOOR "textures/floor.xpm"
 # define OPENED "textures/open.xpm"
 # define CLOSED "textures/closed.xpm"
-# define COLLECTIBLE "textures/collectible.xpm"
+# define C "textures/collectible.xpm"
 # define ENEMY "textures/Enemy.xpm"
 # define ENEMY2 "textures/Enemy2.xpm"
+# define DEATH1 "textures/death1.xpm"
+# define DEATH2 "textures/death2.xpm"
+# define DEATH3 "textures/death3.xpm"
+# define DEATH4 "textures/death4.xpm"
 
 int		ft_key_pressed(int keysym, t_game *game);
 int		ft_key_released(int keysym, t_game *game);
@@ -85,6 +97,9 @@ void	clear_screen(t_game *game, unsigned int color);
 void	ft_destroyall(t_game *game);
 int		ft_update(t_game *game);
 void	ft_hooks(t_game *game);
-void	ft_end(t_game *game);
+void	ft_end(t_game *game, int j);
+char	**ft_mapalloc(char *file, t_game *game);
+int		ft_isdead(t_game *game);
+void	ft_frames(t_game *game);
 
 #endif

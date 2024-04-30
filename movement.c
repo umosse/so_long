@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:27:21 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/25 14:31:55 by umosse           ###   ########.fr       */
+/*   Updated: 2024/04/30 14:40:22 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,21 @@ int	ft_key_released(int keysym, t_game *game)
 
 void	ft_movement(t_game *game)
 {
+	if (!game->moved && (game->w || game->s || game->a || game->d))
+		game->steps++;
 	if (game->w && !game->moved)
-	{
 		game->y -= 64;
-		game->steps++;
-	}
 	else if (game->s && !game->moved)
-	{
 		game->y += 64;
-		game->steps++;
-	}
 	else if (game->a && !game->moved)
 	{
 		game->flipped = 1;
 		game->x -= 64;
-		game->steps++;
 	}
 	else if (game->d && !game->moved)
 	{
 		game->flipped = 0;
 		game->x += 64;
-		game->steps++;
 	}
 	if (game->w || game->s || game->a || game->d)
 		game->moved = 1;
