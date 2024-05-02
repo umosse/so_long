@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:23:56 by umosse            #+#    #+#             */
-/*   Updated: 2024/05/02 13:40:18 by umosse           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:45:11 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	**ft_mapread(char *file, t_game *game)
 	game->map = ft_mapalloc(file, game);
 	i = 0;
 	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (NULL);
 	line = get_next_line(fd);
 	if (!line)
 		return (NULL);
