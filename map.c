@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 14:23:56 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/30 18:15:45 by umosse           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:40:18 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,36 +16,19 @@ char	**ft_mapread(char *file, t_game *game)
 {
 	int		fd;
 	char	*line;
-	char	**map;
 	int		i;
 
-	map = ft_mapalloc(file, game);
-	game->map = map;
+	game->map = ft_mapalloc(file, game);
 	i = 0;
 	fd = open(file, O_RDONLY);
 	line = get_next_line(fd);
-	while (line)
-	{
-		map[i] = line;
-		game->maptest[i] = ft_strdup(line);
-		game->maxmapx = ft_strlen(map[0]);
-		if ((int)ft_strlen(map[i]) != game->maxmapx || game->maxmapx > 25)
-		{
-			while (line)
-			{
-				line = get_next_line(fd);
-				free(line);
-				close(fd);
-			}
-			return (NULL);
-		}
-		i++;
-		line = get_next_line(fd);
-	}
-	close(fd);
-	if (i > 12)
+	if (!line)
 		return (NULL);
-	return (map);
+	i = ft_mapread3(line, game, fd);
+	close(fd);
+	if (i > 12 || i == -1)
+		return (NULL);
+	return (game->map);
 }
 
 void	ft_isc(t_game *game, int x, int y)

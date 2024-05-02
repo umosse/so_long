@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 23:13:46 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/30 17:16:30 by umosse           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:25:41 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,23 @@ int	ft_isdead(t_game *game)
 
 void	ft_destroyall(t_game *game)
 {
-	mlx_destroy_image(game->mlx, game->character);
-	mlx_destroy_image(game->mlx, game->character2);
-	mlx_destroy_image(game->mlx, game->wall);
-	mlx_destroy_image(game->mlx, game->floor);
-	mlx_destroy_image(game->mlx, game->opened);
-	mlx_destroy_image(game->mlx, game->closed);
-	mlx_destroy_image(game->mlx, game->collectible);
-	mlx_destroy_image(game->mlx, game->enemy);
-	mlx_destroy_image(game->mlx, game->enemy2);
-	mlx_destroy_image(game->mlx, game->death1);
-	mlx_destroy_image(game->mlx, game->death2);
-	mlx_destroy_image(game->mlx, game->death3);
-	mlx_destroy_image(game->mlx, game->death4);
-	mlx_destroy_image(game->mlx, game->screen);
-	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_display(game->mlx);
+	if (game->character)
+		mlx_destroy_image(game->mlx, game->character);
+	if (game->character2)
+		mlx_destroy_image(game->mlx, game->character2);
+	if (game->wall)
+		mlx_destroy_image(game->mlx, game->wall);
+	if (game->floor)
+		mlx_destroy_image(game->mlx, game->floor);
+	if (game->opened)
+		mlx_destroy_image(game->mlx, game->opened);
+	if (game->closed)
+		mlx_destroy_image(game->mlx, game->closed);
+	if (game->collectible)
+		mlx_destroy_image(game->mlx, game->collectible);
+	if (game->enemy)
+		mlx_destroy_image(game->mlx, game->enemy);
+	ft_destroyall2(game);
 }
 
 void	ft_hooks(t_game *game)

@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 13:40:52 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/30 18:16:28 by umosse           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:40:47 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_game
 	int				pcount;
 	int				ecount;
 	unsigned long	framecount;
+	int				badnum;
 }	t_game;
 
 # define TILE_SIZE 64
@@ -101,5 +102,8 @@ void	ft_end(t_game *game, int j);
 char	**ft_mapalloc(char *file, t_game *game);
 int		ft_isdead(t_game *game);
 void	ft_frames(t_game *game);
+void	ft_mapread2(int fd, char *line);
+void	ft_destroyall2(t_game *game);
+int		ft_mapread3(char *line, t_game *game, int fd);
 
 #endif

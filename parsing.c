@@ -6,7 +6,7 @@
 /*   By: umosse <umosse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 14:02:41 by umosse            #+#    #+#             */
-/*   Updated: 2024/04/30 18:16:21 by umosse           ###   ########.fr       */
+/*   Updated: 2024/05/02 13:32:55 by umosse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	ft_flood(t_game *game, int posx, int posy)
 		game->ecount++;
 	if (game->maptest[posy][posx] == 'C')
 		game->ccount++;
+	if (game->maptest[posy][posx] != 'P' && game->maptest[posy][posx] != 'E' &&
+		game->maptest[posy][posx] != 'C' && game->maptest[posy][posx] != 'B' &&
+		game->maptest[posy][posx] != '1' && game->maptest[posy][posx] != '0')
+		game->badnum = 1;
 	game->maptest[posy][posx] = 'X';
 	ft_flood(game, posx, posy + 1);
 	ft_flood(game, posx, posy - 1);
@@ -81,6 +85,8 @@ int	ft_flood_map(t_game *game)
 		return (1);
 	ft_flood(game, game->xtest, game->ytest);
 	if (game->pcount != 1 || game->ecount != 1 || game->ccount < 1)
+		return (1);
+	if (game->badnum == 1)
 		return (1);
 	while (y < game->maxmapy)
 	{
